@@ -77,27 +77,23 @@ def test_missing_values_acceptable(sample_data):
 
 
 def test_value_ranges(sample_data):
-    """値の範囲を検証"""
-    context = gx.get_context()
-    data_source = context.data_sources.add_pandas("pandas")
-    data_asset = data_source.add_dataframe_asset(name="pd dataframe asset")
+    """値の範囲を検証（手動チェック）"""
 
-    batch_definition = data_asset.add_batch_definition_whole_dataframe(
-        "batch definition"
-    )
-    batch = batch_definition.get_batch(batch_parameters={"dataframe": sample_data})
+    # Pclass
+    assert sample_data["Pclass"].dropna().isin([1, 2, 3]).all(), "Pclassに不正な値があります"
 
-    results = []
+    # Sex
+    assert sample_data["Sex"].dropna().isin(["male", "female"]).all(), "Sexに不正な値があります"
 
-    # 必須カラムの存在確認
-    required_columns = [
-        "Pclass",
-        "Sex",
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Embarked",
+    # Age
+    assert sample_data["Age"].dropna().between(0, 100).all(), "Ageに不正な値があります"
+
+    # Fare
+    assert sample_data["Fare"].dropna().between(0, 600).all(), "Fareに不正な値があります"
+
+    # Embarked
+    assert sample_data["Embarked"].dropna().isin(["C", "Q", "S"]).all(), "Embarkedに不正な値があります"
+
     ]
     missing_columns = [
         col for col in required_columns if col not in sample_data.columns
