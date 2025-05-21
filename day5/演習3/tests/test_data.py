@@ -100,6 +100,9 @@ def test_value_ranges(sample_data):
     # Embarked は C / Q / S のいずれか
     assert sample_data["Embarked"].dropna().isin(["C", "Q", "S"]).all(), "Embarkedに不正な値があります"
 
+# Great Expectations部分はひとまずコメントアウト
+
+
 
 
    
